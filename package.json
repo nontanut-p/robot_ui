@@ -1,0 +1,50 @@
+{
+	"name": "client",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"@craco/craco": "^6.1.2",
+		"@testing-library/jest-dom": "^5.12.0",
+		"@testing-library/react": "^11.2.7",
+		"@testing-library/user-event": "^12.8.3",
+		"autoprefixer": "^9.8.6",
+		"axios": "^0.21.1",
+		"express": "^4.17.1",
+		"leaflet": "^1.7.1",
+		"leaflet-drift-marker": "^2.0.0",
+		"postcss": "^7.0.35",
+		"rclnodejs": "^0.18.2",
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2",
+		"react-leaflet": "^3.2.0",
+		"react-router-dom": "^5.2.0",
+		"react-scripts": "4.0.3",
+		"simple-peer": "^9.11.0",
+		"socket.io": "^4.1.2",
+		"socket.io-client": "^4.1.2",
+		"systeminformation": "^5.7.6",
+		"tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.2",
+		"web-vitals": "^1.1.2",
+		"wrtc": "^0.4.7"
+	},
+	"scripts": {
+		"start": "craco start",
+		"build": "craco build",
+		"test": "craco test",
+		"eject": "react-scripts eject"
+	},
+	"eslintConfig": {
+		"extends": [
+			"react-app",
+			"react-app/jest"
+		]
+	},
+	"browserslist": [
+		">0.2%",
+		"not dead",
+		"not op_mini all"
+	],
+	"devDependencies": {
+		"tailwindcss-debug-screens": "^2.0.0"
+	}
+}
