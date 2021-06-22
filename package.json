@@ -13,8 +13,10 @@
 		"autoprefixer": "^9.8.6",
 		"axios": "^0.21.1",
 		"express": "^4.17.1",
+		"express-favicon": "^2.0.1",
 		"leaflet": "^1.7.1",
 		"leaflet-drift-marker": "^2.0.0",
+		"path": "^0.12.7",
 		"postcss": "^7.0.35",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
@@ -30,7 +32,7 @@
 		"wrtc": "^0.4.7"
 	},
 	"scripts": {
-		"start": "craco start",
+		"start": "node server.js",
 		"build": "craco build",
 		"test": "craco test",
 		"eject": "react-scripts eject"
