@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 import L from 'leaflet';
 import DriftMarker from 'leaflet-drift-marker';
+
 function Maps({ long, lat }) {
 	//  Create the Icon
+
 	const LeafIcon = L.Icon.extend({
 		options: {},
 	});
@@ -20,9 +22,10 @@ function Maps({ long, lat }) {
 	//  Use the state hook:
 	const icon = blueIcon;
 	const center = [14.081774254281205, 100.59961344556987]
-	const position = [14.082434222082048, 100.60099076357807]
-
+	const position = [14.082569505222098, 100.59969257447217]
+	const redOptions = { color: 'red' }
 	const limeOptions = { color: 'lime' }
+
 	const polyline = [
 		[14.081266711466936, 100.59834136621674],
 		[14.08220741492897, 100.59832783345767],
@@ -52,7 +55,8 @@ function Maps({ long, lat }) {
 			className='rounded-xl border-2 	'
 			center={center}
 			//14.078291798078023, 100.60221644781316
-			zoom={20}
+			zoom={21}
+			maxZoom={50}
 			scrollWheelZoom={true}
 		>
 			<TileLayer
@@ -65,7 +69,8 @@ function Maps({ long, lat }) {
 					I'M A R O B O T
 				</Popup>
 			</Marker>
-			<Polyline pathOptions={limeOptions} positions={polyline} />
+			<Polyline pathOptions={limeOptions} positions={polyline} weight={10} />
+			<Polyline pathOptions={redOptions} positions={polyline} weight={1} />
 		</MapContainer>
 
 

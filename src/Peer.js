@@ -11,13 +11,13 @@ var pc = {
 var base64Img = 0
 var exportData = [pc, false, base64Img]
 const URL = 'https://weather.mtec.or.th';
-//const URL = 'http://localhost:8080';
+
 const email = 'pat', pass = 'agrimtec';
 var socket = null;
 new Promise((resolve, reject) => {
-    //resolve(console.log('print'))
+
     socket = io.connect(URL);
-    //console.log('Im here')
+
     socket.on('connect', function () {
         console.log('socket connected');
     });
@@ -200,7 +200,6 @@ var robot = {
         peer.on('data', (data) => {
             console.log('got data : ', data);
             try {
-                //  console.log('my  Raw  Data', data)
                 data = JSON.parse(data);
 
             }
