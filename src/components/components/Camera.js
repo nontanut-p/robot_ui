@@ -9,8 +9,9 @@ function Camera({ video }) {
 			</div>
 			<div>
 				<div className='px-3 py-3 '>
-					<div className=" ">
-						<img className='w-400' src={`data:image/jpeg;base64,${video.video}`} />
+					<div className="photo">
+						<img className='img' src={`data:image/jpeg;base64,${video.video}`} />
+
 					</div>
 				</div>
 
