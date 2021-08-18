@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 import L from 'leaflet';
 import DriftMarker from 'leaflet-drift-marker';
-
-function Maps({ long, lat }) {
+import Peer from '../../Peer.js';
+function Maps(map) {
 	//  Create the Icon
 
 	const LeafIcon = L.Icon.extend({
@@ -1307,6 +1307,10 @@ function Maps({ long, lat }) {
 
 
 	]
+	const dummyLL = [[10.07943709,100.6013824],[10.07945929,100.6009675]]
+	var robotPOS = (Peer[3].length > 2) ?    [Peer[3][Peer[3].length - 2], Peer[3][Peer[3].length -1]] : dummyLL
+	let robotMap = (Peer[3].length < 1)?  dummyLL :  Peer[3]
+	console.log(robotPOS,'robotPOS')
 	return (
 
 		<MapContainer
@@ -1328,6 +1332,11 @@ function Maps({ long, lat }) {
 					I'M A R O B O T
 				</Popup>
 			</Marker>
+			{
+				
+			}
+			<Polyline pathOptions={limeOptions} positions={robotMap} weight={5} />
+			<Polyline pathOptions={redOptions} positions={robotPOS} weight={7} />
 			<Polyline pathOptions={limeOptions} positions={polyline} weight={10} />
 			<Polyline pathOptions={redOptions} positions={polyline} weight={1} />
 			<Polyline pathOptions={blueOptions} positions={mtecLineDay1} weight={3} />

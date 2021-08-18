@@ -5,7 +5,7 @@ function Header(status) {
 
 	var d = new Date();
 	var time = d.toLocaleTimeString();
-	console.log('ramUse', status.hardwareStatus[0].ramUsage, 'cpuUsage', status.hardwareStatus[0].cpuUsage, 'battery', status.hardwareStatus[0].battery, 'temp', status.hardwareStatus[0].temp, 'hardware', status.connectStatus)
+	//console.log('ramUse', status.hardwareStatus[0].ramUsage, 'cpuUsage', status.hardwareStatus[0].cpuUsage, 'battery', status.hardwareStatus[0].battery, 'temp', status.hardwareStatus[0].temp, 'hardware', status.connectStatus)
 	return (
 		<div className='border-2 max-w-xl mx-auto bg-white rounded-xl shadow-md overflow-hidden xl:max-w-2xl'>
 			<div className='text-center pl-2 pt-2 uppercase tracking-tight text-sm md:text-md text-blue-700 font-semibold'>
