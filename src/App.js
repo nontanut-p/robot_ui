@@ -31,7 +31,7 @@ function App() {
 				},
 			]);
 			setConnectStatus(Peer[1]);
-		}, 1000);
+		}, 150);
 	}, 0);
 
 	return (
@@ -46,7 +46,7 @@ function App() {
 						hardwareStatus={computerStatus}
 						connectStatus={connectStatus}
 					/>
-					<Home video={Peer[2]} />
+					<Home  />
 					<Footer />
 				</Route>
 				<Route exact path="/map">

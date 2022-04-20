@@ -6,7 +6,7 @@ const socket = io();
 
 
 function Message() {
-    const [receivedMessagess, setReceivedMessagess] = useState(['1','2','3']);
+    const [receivedMessagess, setReceivedMessagess] = useState(['Driver ERROR','GPS DOWN','Battery dead','Motor head','Boomb','Boomb','GPS DOWN','Battery dead','Motor head','Boomb','Boomb']);
     const numbers = [1, 2, 3, 4, 5];
     useEffect(()=>{
         socket.on('test', data => {

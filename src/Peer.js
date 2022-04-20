@@ -1,7 +1,7 @@
 import SimplePeer from 'simple-peer';
 import io from 'socket.io-client';
 import wrtc from 'wrtc';
-
+import Camera from '../src/components/components/Camera'
 var pc = {
 	cpuUsage: 0,
 	ramUsage: 0,
@@ -21,9 +21,8 @@ let gnssData = {
 
 let gazebo_sim_ll = []
 var base64Img = 0;
-var exportData = [pc, false, base64Img, gazebo_sim_ll];
-const URL = 'https://weather.mtec.or.th';
-
+var exportData = [pc, false, base64Img, gazebo_sim_ll,1];
+const URL = 'http://agv.mtec.or.th';
 const email = 'pat',
 	pass = 'agrimtec';
 var socket = null;
@@ -217,7 +216,7 @@ var robot = {
 			
 			try {
 				data = JSON.parse(data);
-				//console.log('got data : ', data);
+			//	console.log('got data : ', data);
 			} catch (e) {
 				console.warn('cannot parse data');
 				return;
@@ -229,25 +228,32 @@ var robot = {
 					clearInterval(th.timer_check_ready);
 					th.timer_check_ready = null;
 				}
+		
 				// th.send_peer({event:'get_path_list'});
-				//setInterval(() => th.send_peer({ event: 'get_pc_status' }), 5000);
-				setInterval(() => th.send_peer({ event: 'stream' }), 150);
+				setInterval(() => th.send_peer({ event: 'get_pc_status' }), 5000);
+			    setInterval(() => th.send_peer({ event: 'stream' }), 50);
+				//setInterval(()=>{changeCam()},500)
 				//setInterval(() => th.send_peer({ event: 'gnssMessage' }), 5000);
-				setInterval(() => th.send_peer({ event: 'gazebo_sim' }), 500);
+				setInterval(() => th.send_peer({ event: 'get_location' }), 500);
 			} else if (data.event == 'get_pc_status') {
 				pc.cpuUsage = data.status.cpuUsage;
 				pc.ramUsage = data.status.ramUsage;
 				pc.battery = data.status.battery;
 				pc.temp = data.status.temp;
-			} else if (data.event == 'gazebo_sim') {
-		
+			} else if (data.event == 'get_location') {
 				exportData[3] = data.data
-				//console.log('test for data ', data.data);
+			//	console.log('test for data ', data.data);
 			} else if (data.event == 'stream') {
 				//base64Img = data.base64Img
-
+				if(exportData[4] === 1){
+					th.send_peer({ event: 'camera_1' });
+				}else if (exportData[4] === 2){
+					th.send_peer({ event: 'camera_2' });
+				}else if (exportData[4] === 3){
+					th.send_peer({ event: 'camera_3' });
+				}else th.send_peer({ event: 'camera_0' });
 				exportData[2] = data.base64;
-				console.log('stream got data ')
+				//console.log('stream got data ')
 				//console.log('base64Img ', exportData[2])
 			} else if (data.event == 'get_path_list') {
 				//console.log('got path list');
@@ -294,7 +300,5 @@ var robot = {
 	},
 };
 
-//exports.pc = pc
-//exports.ConnectStatus = ConnectStatus
 
 export default exportData;
