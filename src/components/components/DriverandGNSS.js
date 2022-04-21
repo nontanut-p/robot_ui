@@ -13,7 +13,7 @@ function DriverandGNSS(gnssMessage) {
 	useEffect(()=>{
 		setInterval(() => {
 			try{
-			gnssMess = Peer[3][0]
+			gnssMess = Peer.robot_location[0]
 			setLat(gnssMess[0].toString())
 			setLon(gnssMess[1].toString())
 			}catch(err){
@@ -59,19 +59,8 @@ function DriverandGNSS(gnssMessage) {
 				<div className="border-2 bg-blue-100 pl-3 rounded-md mx-2 my-2 text-blue-600 font-semibold ">
 					{EnableSpray == 'Start' ? <button className="text-green-600 font-semibold" onClick={()=>setEnableSpray('Stop')} > ENABLE SPRAY </button> : <button onClick={()=>setEnableSpray('Start')} className="font-semibold text-red-600" > DISABLE SPRAY </button>}
 				</div>
-				<div className="border-2 bg-blue-100 pl-3 rounded-md mx-2 my-2 text-blue-600 font-semibold ">
-					{EnableSpray == 'Start' ? <button className="text-green-600 font-semibold" onClick={()=>getPathList()} > GET PATH LIST </button> : <button onClick={()=>getPathList()} className="font-semibold text-red-600" > DISABLE SPRAY </button>}
-				</div>
-				<div className="border-2 bg-blue-100 pl-3 rounded-md mx-2 my-2 text-blue-600 font-semibold ">
-					<p>
-						Vy :<span className="text-gray-600 font-light"> 1200</span>{' '}
-					</p>
-				</div>
-				<div className="border-2 bg-blue-100 pl-3 rounded-md mx-2 my-2 text-blue-600 font-semibold ">
-					<p>
-						W :<span className="text-gray-600 font-light"> 1200</span>{' '}
-					</p>
-				</div>
+
+
 			</div>
 		</div>
 	);

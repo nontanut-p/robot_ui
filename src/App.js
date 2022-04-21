@@ -22,16 +22,17 @@ function App() {
 	const [gazebosimll, setGazebosimll] = useState()
 	useEffect(() => {
 		setInterval(() => {
+			console.log(Peer,'test')
 			setcomputerStatus([
 				{
-					cpuUsage: Peer[0].cpuUsage,
-					ramUsage: Peer[0].ramUsage,
-					battery: Peer[0].battery,
-					temp: Peer[0].temp,
+					cpuUsage: Peer.pc_status.cpuUsage,
+					ramUsage: Peer.pc_status.ramUsage,
+					battery: Peer.pc_status.battery,
+					temp: Peer.pc_status.temp,
 				},
 			]);
-			setConnectStatus(Peer[1]);
-		}, 150);
+			setConnectStatus(Peer.connection_status);
+		}, 500);
 	}, 0);
 
 	return (
@@ -40,14 +41,14 @@ function App() {
 				<Route exact path="/">
 					{' '}
 					<div>
-						<Navbar />
+						{/* <Navbar /> */}
 					</div>
 					<Header
 						hardwareStatus={computerStatus}
 						connectStatus={connectStatus}
 					/>
 					<Home  />
-					<Footer />
+					{/* <Footer /> */}
 				</Route>
 				<Route exact path="/map">
 					<Maps/>

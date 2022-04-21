@@ -22,7 +22,7 @@ function Camera() {
 	}
 	useEffect(() => {
 		setInterval(() => {
-			img_stream = Peer[2]
+			img_stream = Peer.stream_images
 			//console.log(img_stream)
 		}, 50);
 	});
@@ -42,17 +42,17 @@ function Camera() {
 				</div>
 
 				<div className='px-2 grid grid-cols-4 gap-4 pb-2'>
-					<button onClick={()=> { Peer[4] = 1} } className='hover: transform hover:-translate-y-1 hover:scale-110  hover:text-black text-white font-semibold rounded-full bg-green-400'>
+					<button onClick={()=> { Peer.camera_selection = 1} } className='hover: transform hover:-translate-y-1 hover:scale-110  hover:text-black text-white font-semibold rounded-full bg-green-400'>
 						{' '}
 						Camera 1
 					</button>
-					<button onClick={()=> { Peer[4] = 2} } className='hover: transform hover:-translate-y-1 hover:scale-110  hover:text-black  text-white font-semibold rounded-full bg-green-400'>
+					<button onClick={()=> { Peer.camera_selection = 2} } className='hover: transform hover:-translate-y-1 hover:scale-110  hover:text-black  text-white font-semibold rounded-full bg-green-400'>
 					Camera 2
 					</button>
-					<button onClick={()=> { Peer[4] = 3} } className='hover: transform hover:-translate-y-1 hover:scale-110 hover:text-black   text-white font-semibold rounded-full bg-green-400'>
+					<button onClick={()=> { Peer.camera_selection = 3} } className='hover: transform hover:-translate-y-1 hover:scale-110 hover:text-black   text-white font-semibold rounded-full bg-green-400'>
 					Camera 3
 					</button>
-					<button onClick={()=> { Peer[4] = 4} } className='hover: transform hover:-translate-y-1 hover:scale-110  hover:text-black text-white font-semibold rounded-full bg-green-400'>
+					<button onClick={()=> { Peer.camera_selection = 4} } className='hover: transform hover:-translate-y-1 hover:scale-110  hover:text-black text-white font-semibold rounded-full bg-green-400'>
 					Camera 4
 					</button>
 				</div>

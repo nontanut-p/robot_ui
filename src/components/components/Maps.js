@@ -10,7 +10,7 @@ let map_data = []
 function Maps() {
 	useEffect(() => {
 		setInterval(() => {
-			map_data = Peer[3]
+			map_data = Peer.robot_location // data list 
 			//console.log('map_data',map_data)
 		}, 500);
 	},0);
@@ -1352,8 +1352,8 @@ function Maps() {
 			<Polyline pathOptions={limeOptions} positions={robotMap} weight={5} />
 			<Polyline pathOptions={redOptions} positions={robotPOS} weight={7} />
 			{/* <Polyline pathOptions={limeOptions} positions={polyline} weight={10} /> */}
-			{/* <Polyline pathOptions={redOptions} positions={polyline} weight={1} /> */}
-			<Polyline pathOptions={blueOptions} positions={mtecLineDay1} weight={3} />
+			{/* <Polyline pathOptions={redOptions} positions={polyline} weight={1} />
+			<Polyline pathOptions={blueOptions} positions={mtecLineDay1} weight={3} /> */}
 		</MapContainer>
 
 

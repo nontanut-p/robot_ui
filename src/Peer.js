@@ -2,6 +2,7 @@ import SimplePeer from 'simple-peer';
 import io from 'socket.io-client';
 import wrtc from 'wrtc';
 import Camera from '../src/components/components/Camera'
+
 var pc = {
 	cpuUsage: 0,
 	ramUsage: 0,
@@ -21,8 +22,10 @@ let gnssData = {
 
 let gazebo_sim_ll = []
 var base64Img = 0;
+// PC STATUS , Connection Status , Image Base64 ,  
+var ObjectDataExport = {"pc_status" : pc , "connection_status" : false , "stream_images" : base64Img , "robot_location" : gazebo_sim_ll , "camera_selection" : 1 , "get_path" : false }
 var exportData = [pc, false, base64Img, gazebo_sim_ll,1];
-const URL = 'http://agv.mtec.or.th';
+const URL = 'https://agv.mtec.or.th';
 const email = 'pat',
 	pass = 'agrimtec';
 var socket = null;
@@ -61,10 +64,12 @@ new Promise((resolve, reject) => {
 		// connect to the first robot if exists
 		if (robots.length > 0 && !robot.peer) {
 			robot.connect(robots[0].socket_id);
-			exportData[1] = true;
+			// exportData[1] = true;
+			ObjectDataExport.connection_status = true
 		} else {
 			console.log('Error Here');
-			exportData[1] = false;
+			// exportData[1] = false;
+			ObjectDataExport.connection_status = false
 		}
 	});
 
@@ -194,7 +199,8 @@ var robot = {
 		});
 		peer.on('connect', () => {
 			console.log('peer connected');
-			exportData[1] = true;
+			// exportData[1] = true;
+			ObjectDataExport.connection_status = true
 			th.b_connected = true;
 			if (!th.timer_check_ready) {
 				th.timer_check_ready = setInterval(() => {
@@ -232,7 +238,12 @@ var robot = {
 				// th.send_peer({event:'get_path_list'});
 				setInterval(() => th.send_peer({ event: 'get_pc_status' }), 5000);
 			    setInterval(() => th.send_peer({ event: 'stream' }), 50);
-				//setInterval(()=>{changeCam()},500)
+				setInterval(()=> {
+					if(ObjectDataExport.get_path === true){
+						th.send_peer({event : 'get_path'})
+						ObjectDataExport.get_path = false
+					}
+				},500)
 				//setInterval(() => th.send_peer({ event: 'gnssMessage' }), 5000);
 				setInterval(() => th.send_peer({ event: 'get_location' }), 500);
 			} else if (data.event == 'get_pc_status') {
@@ -241,18 +252,19 @@ var robot = {
 				pc.battery = data.status.battery;
 				pc.temp = data.status.temp;
 			} else if (data.event == 'get_location') {
-				exportData[3] = data.data
+				// exportData[3] = data.data
+				ObjectDataExport.robot_location = data.data
 			//	console.log('test for data ', data.data);
 			} else if (data.event == 'stream') {
 				//base64Img = data.base64Img
-				if(exportData[4] === 1){
+				if(ObjectDataExport.camera_selection === 1){
 					th.send_peer({ event: 'camera_1' });
-				}else if (exportData[4] === 2){
+				}else if (ObjectDataExport.camera_selection === 2){
 					th.send_peer({ event: 'camera_2' });
-				}else if (exportData[4] === 3){
+				}else if (ObjectDataExport.camera_selection === 3){
 					th.send_peer({ event: 'camera_3' });
 				}else th.send_peer({ event: 'camera_0' });
-				exportData[2] = data.base64;
+				ObjectDataExport.stream_images = data.base64;
 				//console.log('stream got data ')
 				//console.log('base64Img ', exportData[2])
 			} else if (data.event == 'get_path_list') {
@@ -301,4 +313,4 @@ var robot = {
 };
 
 
-export default exportData;
+export default ObjectDataExport;
