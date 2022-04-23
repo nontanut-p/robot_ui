@@ -234,18 +234,22 @@ var robot = {
 					clearInterval(th.timer_check_ready);
 					th.timer_check_ready = null;
 				}
-		
+				try{
+					setInterval(() => th.send_peer({ event: 'get_pc_status' }), 5000);
+					setInterval(() => th.send_peer({ event: 'stream' }), 50);
+					setInterval(()=> {
+						if(ObjectDataExport.get_path === true){
+							th.send_peer({event : 'get_path'})
+							ObjectDataExport.get_path = false
+						}
+					},500)
+					//setInterval(() => th.send_peer({ event: 'gnssMessage' }), 5000);
+					setInterval(() => th.send_peer({ event: 'get_location' }), 500);
+				}catch{
+					console.log('loss connect')
+				}
 				// th.send_peer({event:'get_path_list'});
-				setInterval(() => th.send_peer({ event: 'get_pc_status' }), 5000);
-			    setInterval(() => th.send_peer({ event: 'stream' }), 50);
-				setInterval(()=> {
-					if(ObjectDataExport.get_path === true){
-						th.send_peer({event : 'get_path'})
-						ObjectDataExport.get_path = false
-					}
-				},500)
-				//setInterval(() => th.send_peer({ event: 'gnssMessage' }), 5000);
-				setInterval(() => th.send_peer({ event: 'get_location' }), 500);
+			
 			} else if (data.event == 'get_pc_status') {
 				pc.cpuUsage = data.status.cpuUsage;
 				pc.ramUsage = data.status.ramUsage;
