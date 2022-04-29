@@ -22,7 +22,7 @@ function App() {
 	const [gazebosimll, setGazebosimll] = useState()
 	useEffect(() => {
 		setInterval(() => {
-			console.log(Peer,'test')
+			// console.log(Peer,'test')
 			setcomputerStatus([
 				{
 					cpuUsage: Peer.pc_status.cpuUsage,

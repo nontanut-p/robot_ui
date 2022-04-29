@@ -23,7 +23,7 @@ let gnssData = {
 let gazebo_sim_ll = []
 var base64Img = 0;
 // PC STATUS , Connection Status , Image Base64 ,  
-var ObjectDataExport = {"pc_status" : pc , "connection_status" : false , "stream_images" : base64Img , "robot_location" : gazebo_sim_ll , "camera_selection" : 1 , "get_path" : false }
+var ObjectDataExport = {"pc_status" : pc , "connection_status" : false , "stream_images" : base64Img , "robot_location" : gazebo_sim_ll , "camera_selection" : 1 , "get_path" : false, "path_list" : [] }
 var exportData = [pc, false, base64Img, gazebo_sim_ll,1];
 const URL = 'https://agv.mtec.or.th';
 const email = 'pat',
@@ -222,7 +222,7 @@ var robot = {
 			
 			try {
 				data = JSON.parse(data);
-			//	console.log('got data : ', data);
+			    // console.log('got data : ', data);
 			} catch (e) {
 				console.warn('cannot parse data');
 				return;
@@ -271,6 +271,10 @@ var robot = {
 				ObjectDataExport.stream_images = data.base64;
 				//console.log('stream got data ')
 				//console.log('base64Img ', exportData[2])
+			}else if(data.event =='path_list') {
+				console.log('data.data 275 Peer.js', data.path_list)
+				ObjectDataExport.path_list = data.path_list
+			
 			} else if (data.event == 'get_path_list') {
 				//console.log('got path list');
 				if (data.err) {
