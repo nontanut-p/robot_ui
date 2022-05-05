@@ -6,9 +6,6 @@ import Select from 'react-select'
 // get odometry list from ros topic node --> subscribe  /agribot/odom/odom_gnss 
 var gnssMess ;
 
-
-
-
 function DriverandGNSS(gnssMessage) {
 	const [Lat , setLat] = useState('')
 	const [Lon , setLon] = useState('')
@@ -19,29 +16,30 @@ function DriverandGNSS(gnssMessage) {
 	let [receivedMessagess, setReceivedMessagess] = useState([]);
 	const [getPath, setgetPath] = useState(false) 
 	const [path , addPath] = useState([{ value: 'test', label: 'test' }])
+	var options = []
+	const [pathDirectory , setpathDirectory] = useState([])
 	useEffect(()=>{
-		getPathList()
 		setInterval(() => {
 			try{
 			gnssMess = Peer.robot_location[0]
 			setLat(gnssMess[0].toString())
 			setLon(gnssMess[1].toString())
 			}catch(err){
-			setLat("No Data")
-			setLon("No Data") 
-			if(path != options){
-				addPath(options)
-			}
+			setLat("100.00")
+			setLon("100.00") 
+			// if(path != options){
+			// 	addPath(options)
+			// }
+			// console.log(path)
 			}
 		}, 2000);
 	},0)
 	let updateArray = []
 	let [ message , setMessage] = useState()
 	let temp_for = []
-	var options = []
+	let directory = {}
 	const splitArray =(temp)=>{
         temp = temp
-        console.log(temp, 'hello')
 		for(let i = 0; i < temp.length ; i++){
 			temp_for = temp[i].split('/')
 			console.log(temp_for);
@@ -49,23 +47,34 @@ function DriverandGNSS(gnssMessage) {
 			console.log(temp_for);
 			temp_for = temp_for.split('.path')[0]
 			console.log(temp_for);
+			let textString = temp_for
 			temp_for = { value: temp_for, label: temp_for }
-			options.push(temp_for)
+			options.push(temp_for)	
+			console.log(textString , 'test text string')
+			directory[textString] = String(temp[i])
+			setpathDirectory(directory)
 		}
 	addPath(options)		
-	console.log(options.length, 'option')
     }  
-	
-	const getPathList = async ()=>{
+	let tryCount =  0;
+	const getPathList = () =>{
 		Peer.get_path = true
         setgetPath(true)
         let temp_array = Peer.path_list
         temp_array = Object.values(temp_array)
-        setReceivedMessagess(temp_array)
+		setReceivedMessagess(temp_array)
 		splitArray(receivedMessagess)
+		if(temp_array.length === 0 && tryCount <= 3){
+			tryCount++;
+			setTimeout(function(){
+				getPathList();
+		   },1000); //delay is in milliseconds 
+		
+		}else if(temp_array.length > 0){
+			tryCount = 0
+		}
         
 	}
-
 	return (
 		<>
 		<div className="mt-5  border-2 max-w-xl mx-auto bg-white w-full rounded-xl shadow-md xl:max-w-2xl h-2/3 bg-gray-100  overflow-y-auto ">
@@ -91,6 +100,7 @@ function DriverandGNSS(gnssMessage) {
 					defaultValue={selectedOption}
 					onChange={(e)=>{
 						console.log(e.value,'On change wth option')
+						console.log(pathDirectory[e.value], 'js object')
 						setSelectedOption(e.value)
 					}}
 					options={path}/>
@@ -100,7 +110,7 @@ function DriverandGNSS(gnssMessage) {
 				</div>
 				<div className="border-2 bg-blue-100 pl-3 rounded-md mx-2 my-2 text-blue-600 font-semibold ">
 					{StartFollow == 'Start' ? <button className="text-green-600 font-semibold" onClick={()=>setStartFollow('Stop')} > START FOLLOW </button> : <button onClick={()=>setStartFollow('Start')} className="font-semibold text-red-600" > STOP FOLLOW </button>}
-				</div>
+				</div>	
 				<div className="border-2 bg-blue-100 pl-3 rounded-md mx-2 my-2 text-blue-600 font-semibold ">					
 					{StartStop == 'Start' ? <button className="text-green-600 font-semibold" onClick={()=>setStartStop('Stop')} > START RECORD </button> : <button onClick={()=>setStartStop('Start')} className="font-semibold text-red-600" > STOP RECORD </button>}
 				</div>

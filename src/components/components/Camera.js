@@ -6,7 +6,7 @@ let img_stream
 function Camera() {
 	let [button_click, setButton_click] = useState('OFF') 
 	let [bg, setBG] = useState('red') 
-	let [imageSource, setimageSource] = useState('https://www.pngitem.com/pimgs/m/674-6740802_web-cam-camera-off-webcam-off-icon-png.png') 
+	let [imageSource, setimageSource] = useState('https://png.pngtree.com/element_our/20190530/ourlarge/pngtree-no-photo-selfie-icon-image_1267182.jpg') 
 	
 	function handleClick(e) {
 		e.preventDefault();
@@ -17,7 +17,7 @@ function Camera() {
 		}else {
 			setButton_click('OFF')
 			setBG('red')
-			setimageSource("https://www.pngitem.com/pimgs/m/674-6740802_web-cam-camera-off-webcam-off-icon-png.png") 
+			setimageSource("https://png.pngtree.com/element_our/20190530/ourlarge/pngtree-no-photo-selfie-icon-image_1267182.jpg") 
 		}	
 	}
 	useEffect(() => {
@@ -43,8 +43,8 @@ function Camera() {
 
 				<div className='px-2 grid grid-cols-4 gap-4 pb-2'>
 					<button onClick={()=> { Peer.camera_selection = 1} } className='hover: transform hover:-translate-y-1 hover:scale-110  hover:text-black text-white font-semibold rounded-full bg-green-400'>
-						{' '}
-						Camera 1
+					{' '}
+					Camera 1
 					</button>
 					<button onClick={()=> { Peer.camera_selection = 2} } className='hover: transform hover:-translate-y-1 hover:scale-110  hover:text-black  text-white font-semibold rounded-full bg-green-400'>
 					Camera 2

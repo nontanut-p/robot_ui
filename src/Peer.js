@@ -272,7 +272,6 @@ var robot = {
 				//console.log('stream got data ')
 				//console.log('base64Img ', exportData[2])
 			}else if(data.event =='path_list') {
-				console.log('data.data 275 Peer.js', data.path_list)
 				ObjectDataExport.path_list = data.path_list
 			
 			} else if (data.event == 'get_path_list') {
