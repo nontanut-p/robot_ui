@@ -19,22 +19,22 @@ function Header(status) {
 							<span class='text-green-400 '> Auto </span>
 						</li>
 						<li>
-							<i class='fas fa-bolt'></i> DRIVER :{' '}
+							<i class='fas fa-bolt'></i> Emergency Stop :{' '}
 							<span class='text-green-400 '>
 								test
 							</span>
 						</li>
 						<li>
 							<i class='fas fa-video'></i> CAMERA :{' '}
-							<span class='text-red-400 '> NOT WORKING </span>
+							<span class='text-red-400 '> WORKING </span>
 						</li>
 						<li>
 							<i class='fas fa-tint'></i> SPRAY :{' '}
 							<span class='text-green-400 '> WORKING </span>
 						</li>
 						<li>
-							<i class='fas fa-gamepad'></i> JOYSTICK :{' '}
-							<span class='text-red-400 '> NOT WORKING </span>
+							<i class='fas fa-gamepad'></i> Remote Control :{' '}
+							<span class='text-red-400 '> ON </span>
 						</li>
 					</ul>
 				</div>

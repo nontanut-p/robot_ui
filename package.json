@@ -36,7 +36,7 @@
 		"wrtc": "^0.4.7"
 	},
 	"scripts": {
-		"start": "node server.js",
+		"start": "craco start",
 		"build": "craco build",
 		"test": "craco test",
 		"eject": "react-scripts eject"

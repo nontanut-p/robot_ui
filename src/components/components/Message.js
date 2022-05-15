@@ -21,11 +21,15 @@ function Message() {
             ROBOT MESSAGE
         </div>
         <div className="h-5/6 overflow-y-auto mb-10">
-            <ul>
-            {
-            receivedMessagess.map((item)=> <Text text={item} />)
-            }
-            </ul>
+        <Text text={"Motor 1 "} warn={"Motor boombbb!!"} error={"Drive's on fire"} />
+        <Text text={"Motor 2"} />
+        <Text text={"Motor 3"} />
+        <Text text={"Motor 4"} />
+        <Text text={"Motor 5"} />
+        <Text text={"Motor 6"} />
+        <Text text={"Motor 7"} />
+        <Text text={"Motor 8"} />
+     
           
         </div>
       {/* /<Text text={message} />      */}
