@@ -10,23 +10,25 @@ function DriverandGNSS(gnssMessage) {
 	const [Lat , setLat] = useState('')
 	const [Lon , setLon] = useState('')
 	const [StartStop, setStartStop] = useState('Start')
-	const [StartFollow, setStartFollow] = useState('Start')
+	
 	const [EnableSpray, setEnableSpray] = useState('Start')
 	const [selectedOption, setSelectedOption] = useState("Select PATH ");
-	let [receivedMessagess, setReceivedMessagess] = useState([]);
+	const [receivedMessagess, setReceivedMessagess] = useState();
 	const [getPath, setgetPath] = useState(false) 
 	const [path , addPath] = useState([{ value: 'test', label: 'test' }])
+	const [startFollow , setStartFollow] = useState('START FOLLOW')
 	var options = []
 	const [pathDirectory , setpathDirectory] = useState([])
 	useEffect(()=>{
+		//console.log(Peer.start_follow) when press start follow send [0] = true and [1] name of path that you want to make robot follow 
 		setInterval(() => {
 			try{
 			gnssMess = Peer.robot_location[0]
 			setLat(gnssMess[0].toString())
 			setLon(gnssMess[1].toString())
 			}catch(err){
-			setLat("100.00")
-			setLon("100.00") 
+			setLat((Math.random() * 100).toString())
+			setLon((Math.random() * 100).toString()) 
 			// if(path != options){
 			// 	addPath(options)
 			// }
@@ -39,42 +41,45 @@ function DriverandGNSS(gnssMessage) {
 	let temp_for = []
 	let directory = {}
 	const splitArray =(temp)=>{
-        temp = temp
-		for(let i = 0; i < temp.length ; i++){
-			temp_for = temp[i].split('/')
-			console.log(temp_for);
-			temp_for = temp_for[temp_for.length - 1];
-			console.log(temp_for);
-			temp_for = temp_for.split('.path')[0]
-			console.log(temp_for);
-			let textString = temp_for
-			temp_for = { value: temp_for, label: temp_for }
-			options.push(temp_for)	
-			console.log(textString , 'test text string')
-			directory[textString] = String(temp[i])
-			setpathDirectory(directory)
+		try{
+			temp = Object.keys(temp)
+			for(let i = 0; i < Object.keys(temp).length   ; i++){
+				
+				// temp_for = temp[i].split('/')
+				// temp_for = temp_for[temp_for.length - 1];
+				// temp_for = temp_for.split('.path')[0]
+				// let textString = temp_for
+				temp_for = temp[i]
+				// console.log(temp_for[i])
+				// temp_for = Object.keys(temp[i])
+				console.log(temp_for)
+				temp_for = { value: temp_for, label: temp_for }
+				options.push(temp_for)	
+				// directory[textString] = String(temp[i])
+				// setpathDirectory(directory)
+			}
+		}catch(e){
+			console.log(e)
 		}
+        
 	addPath(options)		
     }  
 	let tryCount =  0;
 	const getPathList = () =>{
 		Peer.get_path = true
         setgetPath(true)
-        let temp_array = Peer.path_list
-        temp_array = Object.values(temp_array)
-		setReceivedMessagess(temp_array)
+		setReceivedMessagess(Peer.path_list)
 		splitArray(receivedMessagess)
-		if(temp_array.length === 0 && tryCount <= 3){
-			tryCount++;
-			setTimeout(function(){
-				getPathList();
-		   },1000); //delay is in milliseconds 
-		
-		}else if(temp_array.length > 0){
-			tryCount = 0
-		}
-        
+
+
 	}
+
+	//"start_follow": [false,"",false]    state of button , name of path , following 
+	const start_follow = ()=>{
+		Peer.follow_mode.state_follow = true
+		Peer.follow_mode.path_follow = selectedOption
+	}
+	
 	return (
 		<>
 		<div className="mt-5  border-2 max-w-xl mx-auto bg-white w-full rounded-xl shadow-md xl:max-w-2xl h-2/3 bg-gray-100  overflow-y-auto ">
@@ -109,7 +114,7 @@ function DriverandGNSS(gnssMessage) {
 					</p> */}
 				</div>
 				<div className="border-2 bg-blue-100 pl-3 rounded-md mx-2 my-2 text-blue-600 font-semibold ">
-					{StartFollow == 'Start' ? <button className="text-green-600 font-semibold" onClick={()=>setStartFollow('Stop')} > START FOLLOW </button> : <button onClick={()=>setStartFollow('Start')} className="font-semibold text-red-600" > STOP FOLLOW </button>}
+					{<button onClick={()=>{start_follow()}}>{startFollow}</button>}
 				</div>	
 				<div className="border-2 bg-blue-100 pl-3 rounded-md mx-2 my-2 text-blue-600 font-semibold ">					
 					{StartStop == 'Start' ? <button className="text-green-600 font-semibold" onClick={()=>setStartStop('Stop')} > START RECORD </button> : <button onClick={()=>setStartStop('Start')} className="font-semibold text-red-600" > STOP RECORD </button>}

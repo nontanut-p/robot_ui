@@ -1,11 +1,8 @@
 import React , {useEffect , useState} from 'react';
-import Path from '../components/Path'
-import io from "socket.io-client";
-
+import Path from './Path'
 import Peer from '../../Peer.js';
 
-const socket = io();
-function PathList() {
+function Roslog() {
    
 
     const numbers = [1, 2, 3, 4, 5];    
@@ -27,7 +24,7 @@ function PathList() {
     )
 }
 
-export default PathList
+export default Roslog
 
 
 
