@@ -22,8 +22,23 @@ let gnssData = {
 
 let gazebo_sim_ll = []
 var base64Img = 0;
+var send_data
 // PC STATUS , Connection Status , Image Base64 ,  
-var ObjectDataExport = {"pc_status" : pc , "connection_status" : false , "stream_images" : base64Img , "robot_location" : gazebo_sim_ll , "camera_selection" : 1 , "get_path" : false, "path_list" : [] }
+var ObjectDataExport = {
+	'send_peer': ()=>{},
+	"pc_status" : pc , "connection_status" : false , "stream_images" : base64Img , "robot_location" : gazebo_sim_ll , "camera_selection" : 1 , "get_path" : false, "path_list" : [ ] ,
+	'start_follow' : {
+		'path_name' : '',
+		'state_follow' : 0 ,  // 0 no order 1 ordering 2 following 
+	},
+	'ros_log' :[],
+	'motor_state' :{},
+	'stop_follow' : false,
+	'stop_record' : false,
+	'start_record' : false,
+	'printFunction' : ()=> {
+	}
+	}
 var exportData = [pc, false, base64Img, gazebo_sim_ll,1];
 const URL = 'https://agv.mtec.or.th';
 const email = 'pat',
@@ -40,18 +55,15 @@ new Promise((resolve, reject) => {
 		//console.log('request_login');
 		socket.emit('login', { email: email, pass: pass });
 	});
-
 	// login succeeded
 	socket.on('auth', function (data) {
 		//console.log('auth ok');
 		// get list of the robots that are currently online
 		socket.emit('get_robot_list');
 	});
-
 	socket.on('unauth', function (data) {
-		console.warn('cannot log in');
+	console.warn('cannot log in');
 	});
-
 	// got robot list
 	socket.on('get_robot_list', function (robots) {
 		if (!robots.peer) {
@@ -123,16 +135,20 @@ var robot = {
 			{
 				urls: 'stun:stun.l.google.com:19302',
 			},
+			{
+				urls: "turn:numb.viagenie.ca",
+				credential: "096872380",
+				username: "nontanut.c@gmail.com",
+			  },
+			
 		],
 	},
-
 	socket_id: null,
 	candidates: [],
 	peer: null,
 	auth_type: null,
 	b_connected: false,
 	timer_check_ready: null,
-
 	connect: function (socket_id) {
 		console.log('connect robot');
 		if (this.socket_id) {
@@ -173,7 +189,12 @@ var robot = {
 
 	send_peer: function (data) {
 		//console.log('send_peer', data);
-		this.peer.send(JSON.stringify(data));
+		try{
+			this.peer.send(JSON.stringify(data));
+		}catch(e){
+			console.log(e)
+		}
+		
 	},
 
 	createPeerConnection: function (socket_id, auth_type, msg) {
@@ -198,13 +219,16 @@ var robot = {
 			console.error(err);
 		});
 		peer.on('connect', () => {
-			console.log('peer connected');
+			console.log('peer connected  test');
 			// exportData[1] = true;
 			ObjectDataExport.connection_status = true
 			th.b_connected = true;
 			if (!th.timer_check_ready) {
 				th.timer_check_ready = setInterval(() => {
 					th.send_peer({ event: 'ready' });
+					ObjectDataExport.send_peer = ()=>{	
+						th.send_peer({event:'test print' , data:'test print'})
+					}
 				}, 1000);
 			}
 		});
@@ -219,10 +243,10 @@ var robot = {
 			th.sendMessage(data);
 		});
 		peer.on('data', (data) => {
-			
+			console.log(data, 'get peeron data')
 			try {
 				data = JSON.parse(data);
-			    // console.log('got data : ', data);
+			    console.log('Recieve: ', data.event);
 			} catch (e) {
 				console.warn('cannot parse data');
 				return;
@@ -235,21 +259,52 @@ var robot = {
 					th.timer_check_ready = null;
 				}
 				try{
+					
 					setInterval(() => th.send_peer({ event: 'get_pc_status' }), 5000);
-					setInterval(() => th.send_peer({ event: 'stream' }), 50);
+					setInterval(() => th.send_peer({ event: 'stream' }), 500);
 					setInterval(()=> {
+						th.send_peer({event : 'get_location'})
+						th.send_peer({event : 'get_motorstate'})
+						th.send_peer({event : 'get_rosout'})
+						if(ObjectDataExport.stop_follow == true){
+							th.send_peer({event : 'stop_follow'})
+							ObjectDataExport.stop_follow = false
+							console.log('stop')
+						}
+						if(ObjectDataExport.start_follow.state_follow == 1){
+							th.send_peer({event : 'start_follow' , path_name : ObjectDataExport.start_follow.path_name })
+							console.log(ObjectDataExport.start_follow.path_name)
+							ObjectDataExport.start_follow.state_follow = 0 
+						}
 						if(ObjectDataExport.get_path === true){
 							th.send_peer({event : 'get_path'})
 							ObjectDataExport.get_path = false
 						}
+						if(ObjectDataExport.start_record === true){
+							th.send_peer({event : 'start_record'})
+							console.log('start record')
+							ObjectDataExport.start_record = false
+						}
+						if(ObjectDataExport.stop_record === true){
+							th.send_peer({event : 'stop_record'})
+							console.log('stop record')
+							ObjectDataExport.stop_record = false
+						}
 					},500)
 					//setInterval(() => th.send_peer({ event: 'gnssMessage' }), 5000);
-					setInterval(() => th.send_peer({ event: 'get_location' }), 500);
+					
 				}catch{
 					console.log('loss connect')
 				}
 				// th.send_peer({event:'get_path_list'});
-			
+			} else if(data.event == "get_rosout"){
+				// console.log(data.message)
+			  ObjectDataExport.ros_log = data.message
+			 //motor_state 
+
+			} else if(data.event == "get_motorstate"){
+				console.log(data.message)
+			  ObjectDataExport.motor_state = data.message
 			} else if (data.event == 'get_pc_status') {
 				pc.cpuUsage = data.status.cpuUsage;
 				pc.ramUsage = data.status.ramUsage;
@@ -258,7 +313,7 @@ var robot = {
 			} else if (data.event == 'get_location') {
 				// exportData[3] = data.data
 				ObjectDataExport.robot_location = data.data
-			//	console.log('test for data ', data.data);
+				console.log('test for data ', data.data);
 			} else if (data.event == 'stream') {
 				//base64Img = data.base64Img
 				if(ObjectDataExport.camera_selection === 1){
@@ -275,7 +330,9 @@ var robot = {
 				console.log('data.data 275 Peer.js', data.path_list)
 				ObjectDataExport.path_list = data.path_list
 			
-			} else if (data.event == 'get_path_list') {
+
+			}	
+			else if (data.event == 'get_path_list') {
 				//console.log('got path list');
 				if (data.err) {
 					console.error(data.err);

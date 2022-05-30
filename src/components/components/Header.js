@@ -7,7 +7,7 @@ function Header(status) {
 	var time = d.toLocaleTimeString();
 	//console.log('ramUse', status.hardwareStatus[0].ramUsage, 'cpuUsage', status.hardwareStatus[0].cpuUsage, 'battery', status.hardwareStatus[0].battery, 'temp', status.hardwareStatus[0].temp, 'hardware', status.connectStatus)
 	return (
-		<div className='border-2 max-w-xl mx-auto bg-white rounded-xl shadow-md overflow-hidden xl:max-w-2xl'>
+		<div className='border-2 max-w-xl my-5 mx-auto bg-white rounded-xl shadow-md overflow-hidden xl:max-w-2xl'>
 			<div className='text-center pl-2 pt-2 uppercase tracking-tight text-sm md:text-md text-blue-700 font-semibold'>
 				CONNECTION STATUS : <span class={status.connectStatus == true ? 'text-green-500 ' : 'text-red-500 '}> {status.connectStatus == true ? 'Online' : 'Offline'} </span>    TIME : <span className='text-green-500' 	> {time}</span>
 			</div>
@@ -21,12 +21,12 @@ function Header(status) {
 						<li>
 							<i class='fas fa-bolt'></i> DRIVER :{' '}
 							<span class='text-green-400 '>
-								test
+								Normal
 							</span>
 						</li>
 						<li>
 							<i class='fas fa-video'></i> CAMERA :{' '}
-							<span class='text-red-400 '> NOT WORKING </span>
+							<span class='text-green-400 '>  WORKING </span>
 						</li>
 						<li>
 							<i class='fas fa-tint'></i> SPRAY :{' '}
@@ -34,7 +34,7 @@ function Header(status) {
 						</li>
 						<li>
 							<i class='fas fa-gamepad'></i> JOYSTICK :{' '}
-							<span class='text-red-400 '> NOT WORKING </span>
+							<span class='text-green-400 '>  WORKING </span>
 						</li>
 					</ul>
 				</div>
@@ -58,7 +58,7 @@ function Header(status) {
 						</li>
 						<li>
 							<i class='fas fa-tint'></i> SPRAY SHOTS :{' '}
-							<span class='text-red-400 '> 321/10000 </span>
+							<span class='text-red-400 '> - </span>
 						</li>
 					</ul>
 				</div>
